@@ -1,0 +1,49 @@
+Project LibraryManagement {
+  database_type: 'MySQL'
+  Note: 'CS27 End of Semester Group Project - Library Management System'
+}
+
+Table members {
+  member_id int [pk, increment]
+  first_name varchar(50) [not null]
+  last_name varchar(50) [not null]
+  email varchar(100) [unique, not null]
+  city varchar(50) [default: 'Ouagadougou']
+  membership_date date [not null]
+}
+
+Table authors {
+  author_id int [pk, increment]
+  first_name varchar(50) [not null]
+  last_name varchar(50) [not null]
+  nationality varchar(50)
+}
+
+Table books {
+  book_id int [pk, increment]
+  title varchar(100) [not null]
+  category varchar(50)
+  price decimal(10,2) [not null]
+  author_id int
+}
+
+Table borrowing {
+  borrow_id int [pk, increment]
+  member_id int [not null]
+  book_id int [not null]
+  borrow_date date [not null]
+  due_date date [not null]
+  return_date date
+}
+
+Table fines {
+  fine_id int [pk, increment]
+  borrow_id int [unique, not null]
+  amount decimal(10,2) [not null]
+  paid_status varchar(10) [default: 'UNPAID']
+}
+
+Ref: books.author_id > authors.author_id
+Ref: borrowing.member_id > members.member_id
+Ref: borrowing.book_id > books.book_id
+Ref: fines.borrow_id - borrowing.borrow_id
